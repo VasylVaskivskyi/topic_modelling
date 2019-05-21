@@ -1,0 +1,16 @@
+#wordcloud{
+    display:block;
+    position:absolute;
+    margin-left: 0px;
+    margin-top: 30px;
+    border-style: outset;
+}
+#download-wordcloud{
+    position:absolute;
+    margin-left: 0px;
+    margin-top: -20px;
+    color:white;
+    background-color: #0f7eaa;
+    border-radius: 4px;
+    
+}

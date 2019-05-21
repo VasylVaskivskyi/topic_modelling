@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"></meta>
+    <link rel="stylesheet" href="style.css"></link>
+    <link rel="stylesheet" href="btn_styles.css"></link>
+    <link rel="stylesheet" href="font.css"></link>
+    <script src="FileSaver.min.js"></script>
+    <script src="SaveImage.js"></script>
+    
+<body>
+    
+    <label for="orcid-input">Generate wordcloud</label>
+    <input type="search" id="orcid-input" name="query-box" aria-label="Input your ORCID to generate wordcloud" placeholder="Enter your ORCID">
+    </input>
+    <button onclick="getImage()">Generate</button>
+    
+   
+
+<div id="image">
+ <div class="dropdown" id="download-wordcloud">
+        <button class="dropbtn">Download</button>
+        <div class="dropdown-content">
+            <a id="save-jpeg">JPEG</a>
+            <a id="save-png">PNG</a>
+        </div>
+    </div>
+    <object id="wordcloud" type="image/svg+xml">
+    </object>
+    
+</div>
+
+
+<script>
+
+var parser = new DOMParser()
+const xhr = new XMLHttpRequest()
+
+function getImage()
+{   
+    var orcid = document.getElementById('orcid-input').value
+    var img = document.getElementById('wordcloud')
+    //img.src = ""
+    img.data = "http://localhost:8081/" + orcid 
+     
+    httpGetAsync("http://localhost:8081/" + orcid,) 
+    /*
+    xhr.open("GET", "http://localhost:8081/" + orcid, true)
+    xhr.send()
+    xhr.onload = function(){ svg = parser.parseFromString(xhr.responseText, 'image/svg+xml')['childNodes'][0] }
+    */
+    
+}
+
+
+document.getElementById('save-jpeg').onclick = function(){saveImage('jpeg', 'wordcloud')}
+document.getElementById('save-png').onclick = function(){saveImage('png','wordcloud')}
+
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest()
+    xmlHttp.onreadystatechange = function() 
+    { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText)
+    }
+    xmlHttp.open("GET", theUrl, true) // true for asynchronous 
+    xmlHttp.send(null)
+}
+
+
+
+
+</script>
+</body>
+</html>

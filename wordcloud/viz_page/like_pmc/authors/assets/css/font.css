@@ -1,0 +1,9 @@
+@font-face {
+	font-family: 'pact';
+	src: url('./impact.eot');
+	src: local('impact'), url('./impact.woff') format('woff'), url('./impact.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="impact_font">Text with this font applied</p> */
+.impact_font {
+	font-family: 'Impact' !important;
+}

@@ -1,0 +1,32 @@
+label {
+    display: block;
+    font: 20px;
+}
+
+input,label {
+    margin: 5 0;
+}
+input,search{
+    width:200px;
+    height:30px;
+}
+#wordcloud{
+    display:block;
+    position:absolute;
+    margin-left: 0px;
+    margin-top: 30px;
+    border-style: outset;
+}
+#download-wordcloud{
+    position:absolute;
+    margin-left: 0px;
+    margin-top: -20px;
+    color:white;
+    background-color: #0f7eaa;
+    border-radius: 4px;
+    
+}
+button{
+    height:30px;
+    
+}

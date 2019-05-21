@@ -1,0 +1,22 @@
+{
+  "name": "wordcloud_viz_server",
+  "version": "1.0.0",
+  "description": "Server for generation of wordclouds from topics using orcid",
+  "main": "svg_wordcloud_mongo_import.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wordcloud",
+    "orcid",
+    "d3"
+  ],
+  "author": "Vasyl Vaskivskyi",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.5.0",
+    "d3-cloud": "^1.2.5",
+    "d3-node": "^2.1.0",
+    "mongoose": "^5.5.9"
+  }
+}

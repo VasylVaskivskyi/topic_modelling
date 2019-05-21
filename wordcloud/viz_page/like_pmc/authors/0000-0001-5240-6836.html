@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"></meta>
+    <link rel="stylesheet" href="assets/css/style.css"></link>
+    <link rel="stylesheet" href="assets/css/btn_styles.css"></link>
+    <link rel="stylesheet" href="assets/css/font.css"></link>
+    <script src="assets/js/FileSaver.min.js"></script>
+    <script src="assets/js/SaveImage2.js"></script>
+    
+<body>
+
+<div id="image">
+ <div class="dropdown" id="download-wordcloud">
+        <button class="dropbtn">Download</button>
+        <div class="dropdown-content">
+            <a id="save-jpeg">JPEG</a>
+            <a id="save-png">PNG</a>
+        </div>
+    </div>
+    <img class="impact_font" id="wordcloud" >
+    </img>
+    
+</div>
+
+
+<script>
+
+
+
+
+var orcid = window.location.pathname.replace('/authors/','').replace('.html','') //get current page address and replace slashes
+var img = document.getElementById('wordcloud')
+img.src = "http://localhost:8081/" + orcid 
+
+document.getElementById('save-jpeg').onclick = function(){saveImage('jpeg', orcid)}
+document.getElementById('save-png').onclick = function(){saveImage('png',orcid)}
+
+
+</script>
+</body>
+</html>
