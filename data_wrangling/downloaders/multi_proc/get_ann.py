@@ -1,9 +1,7 @@
 import requests
 import json
-
-path_ann = './output/ann.txt'
-path_ann_cursor = './output/ann_cursor.txt'
-
+from math import ceil
+from time import sleep
 
 def check_dupl(data_li, el):
     dupl_li = []
@@ -43,17 +41,37 @@ def get_annotations_by_papers(cursor_mark):
     return ann_dict, next_cursor_mark
 
 
+def ann_download(start_cursor, end_cursor, suffix, dir):
+    cursor_mark = start_cursor
+    path_ann = dir + 'ann' + str(suffix) + '.txt'
+    path_ann_cursor =  dir + 'ann_cursor' + str(suffix) + '.txt'
 
-cursor_mark = '0.0'
 
-while cursor_mark != '-1':
-    ann_dict, cursor_mark = get_annotations_by_papers(cursor_mark)
-
-    with open(path_ann,'a',encoding = 'utf-8') as f:
-        for key,val in ann_dict.items():
-            f.write(key + '\t' + val + '\n')
-        f.close()
+    while True:
+        if ceil(float(cursor_mark)) == float(end_cursor):
+            break
+            
+        ann_dict, cursor_mark = get_annotations_by_papers(cursor_mark)
         
-    with open(path_ann_cursor,'a',encoding = 'utf-8') as cur:
-        cur.write(cursor_mark + '\n')
-        cur.close()
+        try:
+            with open(path_ann,'a',encoding = 'utf-8') as f:
+                for key,val in ann_dict.items():
+                    f.write(key + '\t' + val + '\n')
+                f.close()
+        except PermissionError:
+            sleep(1)
+            with open(path_ann,'a',encoding = 'utf-8') as f:
+                for key,val in ann_dict.items():
+                    f.write(key + '\t' + val + '\n')
+                f.close()
+        
+        try:    
+            with open(path_ann_cursor,'a',encoding = 'utf-8') as cur:
+                cur.write(cursor_mark + '\n')
+                cur.close()
+        except PermissionError:
+            sleep(1)
+            with open(path_ann,'a',encoding = 'utf-8') as f:
+                for key,val in ann_dict.items():
+                    f.write(key + '\t' + val + '\n')
+                f.close()

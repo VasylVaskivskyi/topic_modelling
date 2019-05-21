@@ -3,17 +3,6 @@ import json
 from time import sleep
 import os
 
-path_to_orcids = './input/million_orcids.txt'
-path_orcid_data = './output/orcid_data.txt'
-path_downloaded = './output/downloaded_orcids.txt'
-
-#orcid ids downloaded from epmc server 
-ids = []
-with open(path_to_orcids, 'r') as f_ids:
-    for i, line in enumerate(f_ids):
-        ids.append(line.strip('\n'))
-    f_ids.close()
-
 
 def get_by_cursormark(orcid, cursor_mark):
     link = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTHORID%3A' + orcid + '&resultType=idlist&cursorMark=' + cursor_mark + '&pageSize=1000&format=json'
@@ -59,6 +48,24 @@ def papers_for_orcid(orcid):
     else:
         result = [orcid, len(paper_info_li), paper_info_li]
     return result
+
+def check_dir_exist(dir):
+    if os.path.isdir(dir) == False:
+        os.mkdir(dir)
+
+path_to_orcids = '../../input/million_orcids.txt'
+dir = '../../output/output_orcid/'
+check_dir_exist(dir)
+path_orcid_data = dir + 'orcid_data.txt'
+path_downloaded = dir + 'downloaded_orcids.txt'
+
+#orcid ids downloaded from epmc server 
+ids = []
+with open(path_to_orcids, 'r') as f_ids:
+    for i, line in enumerate(f_ids):
+        ids.append(line.strip('\n'))
+    f_ids.close()
+
 
 
 batch_size = 100

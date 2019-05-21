@@ -1,9 +1,7 @@
 import requests
 import json
-
-path_mk = './output/mk.txt'
-path_mk_cursor = './output/mk_cursor.txt'
-
+from time import sleep
+import os
 
 def get_mk(cursor_mark):
     link = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=*&resultType=core&cursorMark=' + cursor_mark + '&pageSize=1000&format=json'
@@ -34,17 +32,42 @@ def get_mk(cursor_mark):
     return mk_dict, cursor_mark, next_cursor_mark
 
 
+def check_dir_exist(dir):
+    if os.path.isdir(dir) == False:
+        os.mkdir(dir)
+        
+
+dir = '../../output/output_mk/'
+path_mk = dir + 'mk.txt'
+path_mk_cursor = dir + 'mk_cursor.txt'
+
+check_dir_exist(dir)
+
 cursor_mark = ''
 next_cursor_mark = '*'
 
 while next_cursor_mark != cursor_mark:
 
     mk_dict, cursor_mark, next_cursor_mark = get_mk(next_cursor_mark)
-
-    with open(path_mk, 'a', encoding = 'utf-8') as f:
-        for key,val in mk_dict.items():
-            f.write(key + '\t' + val + '\n')
-        f.close()
-    with open(path_mk_cursor, 'a', encoding = 'utf-8') as cur:
-        cur.write(cursor_mark + '\n')
-        cur.close()
+    
+    try:
+        with open(path_mk, 'a', encoding = 'utf-8') as f:
+            for key,val in mk_dict.items():
+                f.write(key + '\t' + val + '\n')
+            f.close()
+    except PermissionError:
+        sleep(1)
+        with open(path_mk, 'a', encoding = 'utf-8') as f:
+            for key,val in mk_dict.items():
+                f.write(key + '\t' + val + '\n')
+            f.close()
+    
+    try:    
+        with open(path_mk_cursor, 'a', encoding = 'utf-8') as cur:
+            cur.write(cursor_mark + '\n')
+            cur.close()
+    except PermissionError:
+        sleep(1)
+        with open(path_mk_cursor, 'a', encoding = 'utf-8') as cur:
+            cur.write(cursor_mark + '\n')
+            cur.close()

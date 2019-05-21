@@ -3,18 +3,6 @@ import json
 from time import sleep
 import os
 
-path_to_orcids = './input/million_orcids.txt'
-path_orcid_data = './output/orcid_data.txt'
-path_downloaded = './output/downloaded_orcids.txt'
-
-#orcid ids downloaded from epmc server 
-ids = []
-with open(path_to_orcids, 'r') as f_ids:
-    for i, line in enumerate(f_ids):
-        ids.append(line.strip('\n'))
-    f_ids.close()
-
-
 def get_by_cursormark(orcid, cursor_mark):
     link = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTHORID%3A' + orcid + '&resultType=idlist&cursorMark=' + cursor_mark + '&pageSize=1000&format=json'
     resp = requests.get(link)
@@ -60,29 +48,42 @@ def papers_for_orcid(orcid):
         result = [orcid, len(paper_info_li), paper_info_li]
     return result
 
-
-for i in range(0,len(ids)):
-    id = ids[i]
-
-    #if file opening and closing happens too fast permission error may occur, that's why opening and closing separated
-    try:
-        f_data = open(path_orcid_data, 'a', encoding = 'utf-8')
-        f_d = open(path_downloaded, 'a', encoding = 'utf-8')
-    except PermissionError:
-        sleep(5)
+def orcid_papers_download(path, suffix, slice):
+    path_orcid_data = path + 'orcid_data' + str(suffix) + '.txt'
+    path_downloaded = path + 'downloaded_orcids' + str(suffix) + '.txt'
+    
+    batch_size = 100
+    batches = (len(slice) // batch_size) + 1
+    # need to use bathces because if open close files too often exception PermissionError may occur
+    for i in range(0, batches):
+        k = i * batch_size
+        l = k + batch_size
+        id_li = slice[k:l]
+        result_li = []
+        for j in range(0, len(id_li)):
+            id = id_li[j]
+            result_li.append(papers_for_orcid(id))
+        
         try:
-            f_data = open(path_orcid_data, 'a', encoding = 'utf-8')
-            f_d = open(path_downloaded, 'a', encoding = 'utf-8')
+            with open(path_orcid_data, 'a', encoding = 'utf-8') as f_data:
+                for result in result_li:
+                    f_data.write(result[0] + '\t' + str(result[1]) + '\t' + ','.join(result[2]) + '\n')
+                f_data.close()
         except PermissionError:
-            os.chmod(path_orcid_data, 7777)
-            os.chmod(path_downloaded, 7777)
-            f_data = open(path_orcid_data, 'a', encoding = 'utf-8')
-            f_d = open(path_downloaded, 'a', encoding = 'utf-8')
-
-
-    result = papers_for_orcid(id)
-
-    f_data.write(result[0] + '\t' + str(result[1]) + '\t' + ','.join(result[2]) + '\n')
-    f_d.write(id + '\n')
-    f_data.close()
-    f_d.close()
+            sleep(1)
+            with open(path_orcid_data, 'a', encoding = 'utf-8') as f_data:
+                for result in result_li:
+                    f_data.write(result[0] + '\t' + str(result[1]) + '\t' + ','.join(result[2]) + '\n')
+                f_data.close()
+        
+        try:    
+            with open(path_downloaded, 'a', encoding = 'utf-8') as f_d:   
+                for d in id_li:
+                    f_d.write(d + '\n')
+                f_d.close()
+        except PermissionError:
+            sleep(1)
+            with open(path_downloaded, 'a', encoding = 'utf-8') as f_d:   
+                for d in id_li:
+                    f_d.write(d + '\n')
+                f_d.close()                             
