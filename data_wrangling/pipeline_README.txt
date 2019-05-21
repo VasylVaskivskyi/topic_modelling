@@ -1,4 +1,5 @@
 0. Get list of orcids and put into input folder. 
+Install python library nltk, run in python nltk.download() and download WordNet library under Corpora tab
 
 1. To download data you can use multiprocess scripts or single process in folder dowloaders
 SINGLE PROCESS: get_ann.py, get_mk.py, get_paper_for_orcid.py 
@@ -17,8 +18,9 @@ you can continue from last cursor from *_cursor.txt file in output folder.
 If download was iterrupted it's better to use remove_dups.py to check for duplicates in ids.
 Absence of duplicates is necessary for generation of unique index in MongoDB.
 
+2. Concatenate files inside output folders
 
-2. After files were downloaded use mongo_import.py, to import downloaded data to MongoDB and generate index.
+3. Use mongo_import.py, to import downloaded data to MongoDB and generate index.
 
 3. After downloaded files were imported to MongoDB, run generate_topics_and_import.py, to generate topics
 for each orcid and import them into MongoDB

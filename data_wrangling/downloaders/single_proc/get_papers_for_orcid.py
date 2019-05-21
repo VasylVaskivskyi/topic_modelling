@@ -53,7 +53,7 @@ def check_dir_exist(dir):
     if os.path.isdir(dir) == False:
         os.mkdir(dir)
 
-path_to_orcids = '../../input/million_orcids.txt'
+path_to_orcids = '../../input/orcid_list.txt'
 dir = '../../output/output_orcid/'
 check_dir_exist(dir)
 path_orcid_data = dir + 'orcid_data.txt'

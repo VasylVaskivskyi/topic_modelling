@@ -1,5 +1,4 @@
 from multiprocessing import Process
-import shutil
 import os
 from get_papers_for_orcid import get_by_cursormark, papers_for_orcid, orcid_papers_download
 
@@ -26,30 +25,10 @@ def run_download(dir, path_to_orcid_list):
     for p in proc_list:
         p.join()
 
-def concat_files(dir):
-    with open(dir + 'orcid_data0', 'wb') as outfile:
-        for filename in glob.glob('*.txt'):
-            if filename == outfilename:
-                # don't want to copy the output into the output
-                continue
-            with open(filename, 'rb') as readfile:
-                shutil.copyfileobj(readfile, outfile)
-    with open(dir + 'downloaded_orcids0', 'wb') as outfile:
-        for filename in glob.glob('*.txt'):
-            if filename == outfilename:
-                # don't want to copy the output into the output
-                continue
-            with open(filename, 'rb') as readfile:
-                shutil.copyfileobj(readfile, outfile)
-
-
-
-path_to_orcid_list = '../../input/million_orcids.txt'
+path_to_orcid_list = '../../input/orcid_list.txt'
 dir = '../../output/output_orcid/'
 
 if __name__ == "__main__":
     check_dir_exist(dir)
     run_download(dir, path_to_orcid_list)
-    #concat_files(dir)
-
 
