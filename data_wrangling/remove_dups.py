@@ -1,16 +1,10 @@
 import pandas
+import os
 
+input_path = 'orcid_data.txt'
 
-input_path = './output/mk.txt'
-output_path = './wo_dups/mk.txt'
-
-if not os.path.isdir('./wo_dups'):
-    os.mkdir('./wo_dups')  
-
-def remove_duplicates(file_path, new_path = 'file_path'):
-    if new_path == 'file_path':
-        new_path = file_path
-    new_name = new_path.replace('.','_processed.')
+def remove_duplicates(file_path):
+    new_name = file_path.replace('.txt','_processed.txt')
     print('reading file')
     file = pandas.read_csv(file_path, sep = '\t', dtype = str, header = None, low_memory = True, engine = 'c', encoding = 'utf-8', memory_map = True)
     print('removing duplicates')
@@ -22,4 +16,4 @@ def remove_duplicates(file_path, new_path = 'file_path'):
     return
 
 
-remove_duplicates(input_path, output_path)
+remove_duplicates(input_path)

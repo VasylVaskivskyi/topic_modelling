@@ -47,8 +47,9 @@ def find_mk(paper_li, mk_coll) -> str:
 
 def get_data_for_orcid(orcid_entity, ann_coll, mk_coll) -> dict:
     this_orcid = orcid_entity['ID']
+    n_papers = orcid_entity['NP']
     this_orcid_papers = orcid_entity['PAPERS'].split(',') #convert string of paper ids to list
-    n_papers = len(this_orcid_papers)
+    
     
     #generates threads to find ann and mk
     this_orcid_ann = ThreadWithReturnValue(target = find_ann, args = (this_orcid_papers,ann_coll))
