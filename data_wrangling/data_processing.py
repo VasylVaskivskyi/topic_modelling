@@ -85,11 +85,12 @@ class PhraseExtractor:
             #check if pharse contains search word
             #if yes add value of ph_counted to matches
             matches = {key:val for key,val in ph_counted.items() if search_word in key}
-            sum_matches = sum(matches.values())
-
+            sum_matches = sum(matches.values()) #sum of frequencies of matched pharses
+            
+            #for each mathced phrase check if it contributes >= 10% to the sum of matches
             output_before = len(output)
             for element in matches:
-                if (matches[element]/sum_matches) > 0.1:
+                if (matches[element]/sum_matches) >= 0.1:
                     output[element] = matches[element]
             output_after = len(output)
 
@@ -98,7 +99,7 @@ class PhraseExtractor:
 
 
         result_dict = {}
-        for w in sorted(output, key=output.get, reverse=True):
+        for w in sorted(output, key = output.get, reverse = True):
             result_dict[w] = output[w]
 
 
@@ -113,6 +114,7 @@ class PhraseExtractor:
 
     def remove_single_vals(self, data:dict) -> dict: #remove single words from dict if they are also found in other phrases
         input_data = data
+        input_data = {key:val for key,val in input_data.items() if len(key) > 1} #remove single letters
         single_word_dict = {}
         
         for i in input_data: #get single words

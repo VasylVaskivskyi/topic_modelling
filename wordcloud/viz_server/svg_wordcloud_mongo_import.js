@@ -126,8 +126,8 @@ function returnResult(inputData)
 function drawWordCloud(wordEntries, name)
 {
     //console.log(wordEntries)
-	var freqMinMax = getMinMax(wordEntries) //get min and max frequencies of appearacne
-	var arrLen = wordEntries.length
+    var arrLen = wordEntries.length
+	var freqMinMax = getMinMax(wordEntries, arrLen) //get min and max frequencies of appearance
 	var fontSizeMinMax = []//array min and max font size
 	var width = 1100
     var height = 350
@@ -180,9 +180,10 @@ function drawWordCloud(wordEntries, name)
 	}
     var halfw = width/2
     var halfh = height/2  
+    
     //freqMinMax[0] = -Math.round(arrLen / 2) 
 	d3.select(d3n.document.querySelector('#container')).select('svg').attr('height', height)
-	//fontSizeMinMax = fontSizeMinMax.map(function(item){ return item/2 })
+	
 	
     var fill = d3.scaleQuantize()
 					.domain(freqMinMax)
@@ -244,13 +245,10 @@ function drawWordCloud(wordEntries, name)
     }
 }
 
-function getMinMax(data)
+function getMinMax(data, len)
 {
     //get min and max values of this list of dictionaries
-    let ar = []
-    data.forEach(function(obj)
-    {
-        ar.push(obj.value)
-    })
-	return [Math.min(...ar), Math.max(...ar)]
+    //In the input data the max value is always the first and min is always last
+    
+    return [data[len-1]['value'], data[0]['value']] //min,max
 }
