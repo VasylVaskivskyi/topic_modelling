@@ -15,7 +15,7 @@ mk = './output/mk.txt'
 
 #ID - ORCID id, NP - number of papers, PAPERS - list of papers in format SOURCE:ID
 #PID - paper id, ANN - annotation, MK - MeSH terms and keywords
-# don not put spaces between comas in header_names_types
+#do not put spaces between comas in header_names_types
 import_to_mongo(path_to_mongo_dir, orcids, 'orcid', 'orcid', 'ID.string(),NP.int32(),PAPERS.string()') 
 import_to_mongo(path_to_mongo_dir, ann, 'orcid', 'ann', 'PID.string(),ANN.string()')
 import_to_mongo(path_to_mongo_dir, mk, 'orcid', 'mk', 'PID.string(),MK.string()')

@@ -131,7 +131,8 @@ function drawWordCloud(wordEntries, name)
 	var fontSizeMinMax = []//array min and max font size
 	var width = 1100
     var height = 350
-
+    
+    //adapt font size to the number of topics 
 	if (arrLen > 40)
 	{
         if (arrLen > 100)
