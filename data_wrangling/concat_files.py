@@ -15,6 +15,7 @@ def concat_files(dir):
         with open(dir + of + '.txt', 'wb') as out_f:
             for f in file_li:
                 if f[:-5] == of:
+                    print(f)
                     with open(dir + f, 'rb') as in_f:
                         shutil.copyfileobj(in_f, out_f)
                     in_f.close

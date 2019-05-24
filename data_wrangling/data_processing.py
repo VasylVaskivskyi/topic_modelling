@@ -97,7 +97,7 @@ class PhraseExtractor:
             if output_after == output_before:
                 output[w[0]] = w[1]
 
-
+        #sort in descending order
         result_dict = {}
         for w in sorted(output, key = output.get, reverse = True):
             result_dict[w] = output[w]

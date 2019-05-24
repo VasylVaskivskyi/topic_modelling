@@ -76,6 +76,7 @@ def get_data_for_orcid(orcid_entity, ann_coll, mk_coll) -> dict:
 client = pymongo.MongoClient('mongodb://localhost:27017/', maxPoolSize = 1000, connect=True)
 db = client['orcid'] #select database orcid
 orcid_coll = db['orcid'] #select collection orcid
+orcid_coll_size = db.command('collstats','orcid')['count']  #get size of collection orcid
 
 #use different clients for different collections to speed up proces a bit
 ann_client = pymongo.MongoClient('mongodb://localhost:27017/', maxPoolSize = 1000, connect=True)
@@ -86,7 +87,8 @@ mk_client = pymongo.MongoClient('mongodb://localhost:27017/', maxPoolSize = 1000
 mk_db = mk_client['orcid']
 mk_coll = mk_db['mk']
 
-orcid_coll_size = db.command('collstats','orcid')['count']  #get size of collection orcid
+topic_client = pymongo.MongoClient('mongodb://localhost:27017/', maxPoolSize = 1000, connect=True)
+topic_db = topic_client['topic'] 
 topic_coll = db['topic'] #select collection topic to insert documents into it later
 
 

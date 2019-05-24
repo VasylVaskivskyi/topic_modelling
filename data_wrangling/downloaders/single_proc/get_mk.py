@@ -9,6 +9,8 @@ def get_mk(cursor_mark):
     res = resp.content.decode() #decode from bin
     data = json.loads(res) #convert to json
     mk_dict = dict() #init dictionary for collecting data
+    if not 'nextCursorMark' in data:
+        sleep(5)
     next_cursor_mark = str(data['nextCursorMark']) #get next cursor mark
 
     if 'resultList' not in data:
