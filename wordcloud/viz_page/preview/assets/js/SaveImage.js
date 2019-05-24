@@ -1,27 +1,43 @@
-
-function saveImage(format, svgId)
+function saveImage(format, orcid)
 {
-	var prevCanv = document.getElementById('wordcloud-canvas')
-	if (prevCanv != null){ prevCanv.remove() }
-	
 	var canvas = document.createElement("canvas")
 	canvas.id = 'wordcloud-canvas'
-	CanvasFromSVG(svgId, canvas, format)
-	saveAsImage(format)
-	
-	
+    var parser = new DOMParser()
+ 
+       
+    httpGetAsync("http://localhost:8081/" + orcid, function(resp)
+    {
+        var svg = parser.parseFromString(resp, 'image/svg+xml')['childNodes'][0] //svg itself
+        CanvasFromSVG(svg, canvas, format) //convert svg attributes to canvas
+        saveAsImage(format)
+    })
+    
+    //get data from server
+    function httpGetAsync(theUrl, callback)
+    {
+        var xmlHttp = new XMLHttpRequest()
+        xmlHttp.onreadystatechange = function() 
+        { 
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText)
+        }
+        xmlHttp.open("GET", theUrl, true) // true for asynchronous 
+        xmlHttp.send(null)
+    }
+
+    //save image as jpeg/png
 	function saveAsImage(format)// requires FileSaver.js
 	{
 		canvas.toBlob(function(blob)
 		{
-			saveAs(blob, 'image.' + format)
+			saveAs(blob, orcid + '.' + format)
 		}, 'image/' + format, 1)
 		
 	}
-
-	function CanvasFromSVG(svgId, canvas, format)
+    
+    //parse svg attributes and convert them to canvas
+	function CanvasFromSVG(svg, canvas, format)
 	{
-		var svg = document.getElementById(svgId) //get svg data
 		var svgText = svg.childNodes[0].childNodes //select children of <g>
 
 		canvas.width = svg.width.baseVal.value  //copy svg width/height to canvas

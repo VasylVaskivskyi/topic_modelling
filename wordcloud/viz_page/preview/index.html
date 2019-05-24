@@ -25,49 +25,27 @@
             <a id="save-png">PNG</a>
         </div>
     </div>
-    <object id="wordcloud" type="image/svg+xml">
-    </object>
+    <img id="wordcloud">
+    </img>
     
 </div>
 
 
 <script>
 
-var parser = new DOMParser()
-const xhr = new XMLHttpRequest()
+var orcid
 
 function getImage()
 {   
-    var orcid = document.getElementById('orcid-input').value
+    orcid = document.getElementById('orcid-input').value
     var img = document.getElementById('wordcloud')
-    //img.src = ""
-    img.data = "http://localhost:8081/" + orcid 
-     
-    httpGetAsync("http://localhost:8081/" + orcid,) 
-    /*
-    xhr.open("GET", "http://localhost:8081/" + orcid, true)
-    xhr.send()
-    xhr.onload = function(){ svg = parser.parseFromString(xhr.responseText, 'image/svg+xml')['childNodes'][0] }
-    */
-    
+    img.src = "http://localhost:8081/" + orcid 
 }
 
+document.getElementById('save-jpeg').onclick = function(){saveImage('jpeg', orcid)}
+document.getElementById('save-png').onclick = function(){saveImage('png', orcid)}
 
-document.getElementById('save-jpeg').onclick = function(){saveImage('jpeg', 'wordcloud')}
-document.getElementById('save-png').onclick = function(){saveImage('png','wordcloud')}
 
-
-function httpGetAsync(theUrl, callback)
-{
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.onreadystatechange = function() 
-    { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText)
-    }
-    xmlHttp.open("GET", theUrl, true) // true for asynchronous 
-    xmlHttp.send(null)
-}
 
 
 

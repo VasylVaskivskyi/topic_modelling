@@ -157,34 +157,34 @@ function drawWordCloud(wordEntries, name)
         	}	
     }
 	else
-	{
-        if (freqMinMax[1] - freqMinMax[0] > numColors)  
-        {
-        	//Entries that have small range between min and max frequencies return mostly monochrome images
-        	//We need to shift min frequency by some constant (-1/2 of arrLen) so colors are distributed much better
-        	//In case if difference betwee max frequency and min frequency is less than number of colors, 
-        	//then colors should be distributed okay
-            freqMinMax[0] = -Math.round(arrLen / 2) 
-        }
-        //else use dictionary values
+	{       
         if (arrLen < 20)
         {
-        	fontSizeMinMax = [30,70]
+        	fontSizeMinMax = [20,50]
         	height = 300
         }
         else
         { 
-        	fontSizeMinMax = [20,70] 
-        	height = 320
+        	fontSizeMinMax = [20,50] 
+        	height = 350
         } // 20-40
-        
 	}
-    var halfw = width/2
+    
+ 
+    if (freqMinMax[1] - freqMinMax[0] > numColors)  
+    {
+        //Entries that have small range between min and max frequencies return mostly monochrome images
+        //We need to shift min frequency by some constant (-1/2 of arrLen) so colors are distributed much better
+        //In case if difference betwee max frequency and min frequency is less than number of colors, 
+        //then colors should be distributed okay
+        freqMinMax[0] = -Math.round(arrLen / 2) 
+    }
+    
+    
+	d3.select(d3n.document.querySelector('#container')).select('svg').attr('height', height)
+	var halfw = width/2
     var halfh = height/2  
     
-    //freqMinMax[0] = -Math.round(arrLen / 2) 
-	d3.select(d3n.document.querySelector('#container')).select('svg').attr('height', height)
-	
 	
     var fill = d3.scaleQuantize()
 					.domain(freqMinMax)
@@ -193,6 +193,7 @@ function drawWordCloud(wordEntries, name)
 	var xScale = d3.scaleLinear()
 					.domain(freqMinMax)
 					.range(fontSizeMinMax)
+
 
 
 	cloud().size([width, height])
@@ -215,9 +216,9 @@ function drawWordCloud(wordEntries, name)
 		//If the length of the text is too big it won't be displayed on the image
 		//That's why we need to decrease size of text if its length is more than width of canvas
 		var size = xScale(word.value)
-		if (((word.key.length * size) / 2) > width) //coefficient 2 estimated for Impact font
+		if (((word.key.length * size) / 2) > (width / 3)) //coefficient 2 estimated for Impact font
 		{
-			return (width / word.key.length) * 1.5
+			return ((width / word.key.length) / 2) *1.5
 		}
 		else{ return size }		
 	}
